@@ -64,10 +64,14 @@ _________________
   or assigned to the [master node](https://cloud.google.com/compute/docs/connect/add-ssh-keys#after-vm-creation) only.
 - Ideally, all GCP components used in benchmark should be in the same location (Storage bucket, Dataproc Metastore service and Dataproc cluster).
 
-#### Prepare GCS bucket
+There are two ways to create infrastructure required for benchmarks - using provided [Terraform template](infrastructure/gcp/terraform/README.md) or manually.
+
+#### Create infrastructure manually
+
+##### Prepare GCS bucket
 Create a new GCS bucket (or use an existing one) which is in the same region as your Dataproc cluster.
 
-#### Create Dataproc Metastore
+##### Create Dataproc Metastore
 You can create [Dataproc metastore](https://cloud.google.com/dataproc-metastore/docs/create-service)
 either via Web Console or gcloud command.
 
@@ -78,7 +82,7 @@ gcloud metastore services create dataproc-metastore-for-benchmarks \
     --tier=enterprise
 ```
 
-#### Create Dataproc cluster
+##### Create Dataproc cluster
 Here are the specifications of the Dataproc cluster required for running benchmarks.
 - Image version >= 2.0 having Apache Spark 3.1
 - Master - n2-highmem-8 (8 vCPU, 64 GB memory)
