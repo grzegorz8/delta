@@ -22,9 +22,15 @@
     terraform validate
     terraform apply
     ```
+   As a result, a new Google Storage bucket, a Dataproc Metastore and a Dataproc cluster will be created.
+   The `apply` command returns master node public address that will be used when running benchmarks.
+   ```
+   Apply complete! Resources: 4 added, 0 changed, 0 destroyed.
+   Outputs:
+   master_node_address = "35.165.163.250"
+   ```
 
-5. Once the benchmarks are finished, destroy the resources. The command below deletes Dataproc Metastore, 
-   Dataproc cluster, but **it preserves Google Storage bucket**.
+5. Once the benchmarks are finished, destroy the resources.
     ```bash
     terraform destroy
     ```

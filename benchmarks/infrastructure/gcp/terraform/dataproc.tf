@@ -6,7 +6,6 @@ resource "google_dataproc_metastore_service" "this" {
   hive_metastore_config {
     version = "3.1.2"
   }
-
   labels = var.labels
 }
 
@@ -40,11 +39,23 @@ resource "google_dataproc_cluster" "benchmarks" {
     metastore_config {
       dataproc_metastore_service = google_dataproc_metastore_service.this.id
     }
+    gce_cluster_config {
+      zone = var.zone
+    }
     endpoint_config {
       enable_http_port_access = "true"
     }
   }
-
   labels     = var.labels
-  depends_on = [google_dataproc_metastore_service.this]
+  depends_on = [
+    google_dataproc_metastore_service.this,
+    google_storage_bucket.benchmarks-data
+  ]
+}
+
+data "google_compute_instance" "benchmarks_master" {
+  provider   = google-beta
+  depends_on = [google_dataproc_cluster.benchmarks]
+  name       = google_dataproc_cluster.benchmarks.cluster_config.0.master_config.0.instance_names.0
+  zone       = var.zone
 }

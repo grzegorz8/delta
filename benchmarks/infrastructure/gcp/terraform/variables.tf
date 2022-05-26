@@ -23,7 +23,7 @@ variable "region" {
 variable "zone" {
   description = "The default zone to manage resources in."
   type        = string
-  default     = "us-central1-c"
+  default     = "us-central1-a"
 }
 
 variable "bucket_name" {
