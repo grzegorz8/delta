@@ -35,7 +35,8 @@
    master_node_address = "35.165.163.250"
    ```
 
-5. Once the benchmarks are finished, destroy the resources.
+5. Once the benchmarks are finished, destroy the resources. If the S3 bucket contains any objects, it will not be
+   destroyed automatically. One need to do that manually to avoid any accidental data loss.
     ```bash
     terraform destroy
     ```
