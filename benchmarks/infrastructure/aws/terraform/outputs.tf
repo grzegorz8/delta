@@ -2,6 +2,6 @@
 #  value = aws_emr_cluster.benchmarks.master_public_dns
 #}
 
-output "load_balancer_address" {
-  value = aws_alb.default.dns_name
+output "mlflow_address" {
+  value = "http://${aws_alb.mlflow.dns_name}:${local.mlflow_port}"
 }

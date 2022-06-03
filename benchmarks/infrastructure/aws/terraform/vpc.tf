@@ -47,6 +47,16 @@ resource "aws_security_group" "allow_my_ip" {
     protocol    = "-1"
     cidr_blocks = ["${var.user_ip_address}/32"]
   }
+  ingress {
+    description = "Allow inbound traffic from VPC."
+    from_port   = 0
+    to_port     = 0
+    protocol    = "-1"
+    cidr_blocks = [
+      aws_subnet.benchmarks_subnet1.cidr_block,
+      aws_subnet.benchmarks_subnet2.cidr_block
+    ]
+  }
   egress {
     description      = "Allow all outbound traffic."
     from_port        = 0
