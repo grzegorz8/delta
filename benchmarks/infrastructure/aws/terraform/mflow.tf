@@ -53,6 +53,13 @@ resource "aws_security_group" "mlflow_ec2" {
     protocol        = "-1"
     security_groups = [aws_security_group.mlflow_lb.id]
   }
+  ingress {
+    description = "Allow inbound traffic from given IP."
+    from_port   = 0
+    to_port     = 0
+    protocol    = "-1"
+    cidr_blocks = ["${var.user_ip_address}/32"]
+  }
   egress {
     cidr_blocks = ["0.0.0.0/0"]
     protocol    = "-1"

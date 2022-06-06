@@ -9,8 +9,8 @@ resource "aws_emr_cluster" "benchmarks" {
     instance_profile                  = aws_iam_instance_profile.benchmarks_emr_profile.arn
     key_name                          = aws_key_pair.benchmarks_emr_cluster.key_name
     subnet_id                         = aws_subnet.benchmarks_subnet1.id
-    emr_managed_master_security_group = aws_security_group.allow_my_ip.id
-    emr_managed_slave_security_group  = aws_security_group.allow_my_ip.id
+    emr_managed_master_security_group = aws_security_group.emr_master.id
+    emr_managed_slave_security_group  = aws_security_group.emr_slave.id
   }
 
   master_instance_group {
@@ -223,4 +223,37 @@ resource "aws_iam_role_policy" "benchmarks_iam_emr_profile_policy" {
     ]
 }
 EOF
+}
+
+resource "aws_security_group" "emr_master" {
+  name   = "emr-master-security-group"
+  vpc_id = aws_vpc.this.id
+  ingress {
+    description = "Allow inbound traffic from given IP."
+    from_port   = 0
+    to_port     = 0
+    protocol    = "-1"
+    cidr_blocks = ["${var.user_ip_address}/32"]
+  }
+  egress {
+    description      = "Allow all outbound traffic."
+    from_port        = 0
+    to_port          = 0
+    protocol         = "-1"
+    cidr_blocks      = ["0.0.0.0/0"]
+    ipv6_cidr_blocks = ["::/0"]
+  }
+}
+
+resource "aws_security_group" "emr_slave" {
+  name   = "emr-slave-security-group"
+  vpc_id = aws_vpc.this.id
+  egress {
+    description      = "Allow all outbound traffic."
+    from_port        = 0
+    to_port          = 0
+    protocol         = "-1"
+    cidr_blocks      = ["0.0.0.0/0"]
+    ipv6_cidr_blocks = ["::/0"]
+  }
 }

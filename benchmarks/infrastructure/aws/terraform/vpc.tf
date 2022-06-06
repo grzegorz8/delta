@@ -36,33 +36,3 @@ resource "aws_route_table" "private" {
   vpc_id = aws_vpc.this.id
 }
 
-resource "aws_security_group" "allow_my_ip" {
-  name        = "benchmarks_security_group"
-  description = "Allows all inbound traffic from a specific IP."
-  vpc_id      = aws_vpc.this.id
-  ingress {
-    description = "Allow inbound traffic from given IP."
-    from_port   = 0
-    to_port     = 0
-    protocol    = "-1"
-    cidr_blocks = ["${var.user_ip_address}/32"]
-  }
-  ingress {
-    description = "Allow inbound traffic from VPC."
-    from_port   = 0
-    to_port     = 0
-    protocol    = "-1"
-    cidr_blocks = [
-      aws_subnet.benchmarks_subnet1.cidr_block,
-      aws_subnet.benchmarks_subnet2.cidr_block
-    ]
-  }
-  egress {
-    description      = "Allow all outbound traffic."
-    from_port        = 0
-    to_port          = 0
-    protocol         = "-1"
-    cidr_blocks      = ["0.0.0.0/0"]
-    ipv6_cidr_blocks = ["::/0"]
-  }
-}

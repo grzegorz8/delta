@@ -9,7 +9,10 @@ resource "aws_db_instance" "benchmarks_metastore_service" {
   skip_final_snapshot    = true
   availability_zone      = var.availability_zone1
   db_subnet_group_name   = aws_db_subnet_group.benchmarks_metastore_service.name
-  vpc_security_group_ids = [aws_security_group.allow_my_ip.id]
+  vpc_security_group_ids = [
+    aws_security_group.emr_slave.id,
+    aws_security_group.emr_master.id
+  ]
 }
 
 resource "aws_db_subnet_group" "benchmarks_metastore_service" {
@@ -31,7 +34,9 @@ resource "aws_db_instance" "mflow" {
   skip_final_snapshot    = true
   availability_zone      = var.availability_zone1
   db_subnet_group_name   = aws_db_subnet_group.mflow.name
-  vpc_security_group_ids = [aws_security_group.allow_my_ip.id]
+  vpc_security_group_ids = [
+    aws_security_group.mlflow_ec2.id
+  ]
 }
 
 resource "aws_db_subnet_group" "mflow" {
