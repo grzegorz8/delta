@@ -29,3 +29,26 @@ module "processing" {
 
   depends_on = [module.networking, module.storage]
 }
+
+module "ecr" {
+  source = "./modules/ecr"
+}
+
+module "mlflow" {
+  source = "./modules/mlflow"
+
+  vpc_id     = module.networking.vpc_id
+  subnet1_id = module.networking.subnet1_id
+  subnet2_id = module.networking.subnet2_id
+
+  mlflow_repository_url = module.ecr.mlflow_repository_url
+
+  region                 = var.region
+  availability_zone1     = var.availability_zone1
+  benchmarks_bucket_name = var.benchmarks_bucket_name
+  mysql_user             = var.mysql_user
+  mysql_password         = var.mysql_password
+  user_ip_address        = var.user_ip_address
+
+  depends_on = [module.networking, module.ecr, module.storage]
+}
